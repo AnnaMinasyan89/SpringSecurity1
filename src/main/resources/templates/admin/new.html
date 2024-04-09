@@ -10,7 +10,6 @@
 
 <!--<form th:object="${user}" th:action="@{/save}" method="post">-->
 <form th:object="${user}" th:action="@{/admin/create/new}" method="post">
-    <input type="hidden" th:field="*{id}" />
     <label>Name: <input type="text" th:field="*{username}" /></label>
 
     <br/>
@@ -19,14 +18,10 @@
 
     <br/>
 
-    <label for="roles">Select role:</label>
-    <input type="checkbox" id="roles"
-           name="roles"
-           th:field="*{roles}"
-           th:each="role : ${allRoles}"
-           th:text="${role.name}"
-           th:value="${role.id}"
-    />
+    <div th:each="role : ${allRoles}">
+        <input type="checkbox" th:field="*{roles}" th:value="${role.id}" id="role-${role.id}">
+        <label th:for="'role-' + ${role.id}" th:text="${role.name}"></label><br/>
+    </div>
 
     <br/>
 

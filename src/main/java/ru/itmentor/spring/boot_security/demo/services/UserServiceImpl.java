@@ -3,15 +3,15 @@ package ru.itmentor.spring.boot_security.demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.itmentor.spring.boot_security.demo.dto.UserAddDto;
+import ru.itmentor.spring.boot_security.demo.model.Role;
 import ru.itmentor.spring.boot_security.demo.model.User;
 import ru.itmentor.spring.boot_security.demo.repository.RoleRepository;
 import ru.itmentor.spring.boot_security.demo.repository.UserRepository;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -24,15 +24,14 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
 
-
-   // @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     @Override
     public User readUser(int id) {
         Optional<User> optionalUser = userRepository.findById(id);
@@ -41,14 +40,9 @@ public class UserServiceImpl implements UserService {
 
 
     //erevi update sa klini
-    public void master(int id,User updatedUser) {
+    public void master(int id, User updatedUser) {
         updatedUser.setId(id);
         userRepository.save(updatedUser);
-    }
-
-    @Override
-    public void createUser(User user) {
-        userRepository.save(user);
     }
 
     @Override
@@ -62,12 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     //Roman
     @Override
     public User findUserById(int id) {
         Optional<User> returnedUser = userRepository.findById(id);
-        if (returnedUser.isEmpty()){
+        if (returnedUser.isEmpty()) {
             throw new IllegalArgumentException("id: " + id + " not issue");
         }
         return returnedUser.get();
@@ -75,10 +68,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User addUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.getRoleById(1))));
-        return userRepository.saveAndFlush(user);
+    public User addUser(UserAddDto userAddDto) {
+        System.out.println();
+        List<Role> allById = roleRepository.findAllById(Arrays.asList(1L, 2L));
+        User user = new User(userAddDto.getUsername(), userAddDto.getPassword(), Set.copyOf(allById));
+        User save = userRepository.save(user);
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setRoles(new HashSet<>(Arrays.asList(roleRepository.getRoleById(1))));
+//        return userRepository.saveAndFlush(user);
+        return save;
     }
 
 

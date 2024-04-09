@@ -1,5 +1,6 @@
 package ru.itmentor.spring.boot_security.demo.services;
 
+import ru.itmentor.spring.boot_security.demo.dto.UserAddDto;
 import ru.itmentor.spring.boot_security.demo.model.User;
 
 import javax.transaction.Transactional;
@@ -10,8 +11,6 @@ public interface UserService {
     User readUser(Long id);
     void createOrUpdateUser(User user);
     void deleteUser(Long id);*/
-
-    void createUser(User user);
 
     User readUser(int id);
 
@@ -25,5 +24,5 @@ public interface UserService {
     User findUserById(int id);
 
     @Transactional
-    User addUser(User user);
+    User addUser(UserAddDto user);
 }

@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.itmentor.spring.boot_security.demo.dto.UserAddDto;
 import ru.itmentor.spring.boot_security.demo.model.Role;
 import ru.itmentor.spring.boot_security.demo.model.User;
 import ru.itmentor.spring.boot_security.demo.services.RoleServiceImpl;
@@ -24,12 +25,10 @@ public class AdminController {
     private final UserServiceImpl userService;
     private final RoleServiceImpl roleService;
 
-    private final PasswordEncoder passwordEncoder;
 
-    public AdminController(UserServiceImpl userService, RoleServiceImpl roleService,PasswordEncoder passwordEncoder) {
+    public AdminController(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     //+++++++++++++++++++++
@@ -50,40 +49,36 @@ public class AdminController {
 
 
     //+++++++++++++
-    @GetMapping( "/{id}")
-    public String readUser(@PathVariable("id")int id , Model model) {
-        model.addAttribute("user",userService.readUser(id));
-      //  return "user";
+    @GetMapping("/{id}")
+    public String readUser(@PathVariable("id") int id, Model model) {
+        model.addAttribute("user", userService.readUser(id));
+        //  return "user";
         return "admin/show";
     }
 
 
     //+++++++++++++++++++     save-----
     @GetMapping("/createUser")
-
     public String newForm(Model model) {
         List<Role> roles = roleService.findAllRoles();
         model.addAttribute("allRoles", roles);
-        model.addAttribute("user", new User());
+        model.addAttribute("user", new UserAddDto());
         return "admin/new";
     }
 
     @PostMapping("/create/new")
-  // @GetMapping("/create/new")
-    public String createUser(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") UserAddDto user) {
         userService.addUser(user);
         return "redirect:/admin/users";
     }
 
 
-
-//+++++++++             role-----,  edit-----------
+    //+++++++++             role-----,  edit-----------
     @GetMapping("/editUser/{id}")
     public String showEditForm(@PathVariable("id") int id, Model model) {
 
-        User user =userService.findUserById(id);
+        User user = userService.findUserById(id);
         List<Role> roles = roleService.findAllRoles();
-     //   List<Role> roles =  roleService.getAllRoles();
         model.addAttribute("allRoles", roles);
         model.addAttribute("user", user);
 
@@ -93,7 +88,7 @@ public class AdminController {
 
     @PostMapping("/edit/{id}")
     public String editUser(@PathVariable("id") int id, User user,
-                             BindingResult bindingResult){
+                           BindingResult bindingResult) {
         /*if (bindingResult.hasErrors()){
             user.setId(id);
             return "admin/edit";
@@ -111,8 +106,6 @@ public class AdminController {
        userService.master(id,user);
         return "redirect:/admin/users";
     }*/
-
-
 
 
     //L

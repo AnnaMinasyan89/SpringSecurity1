@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.itmentor.spring.boot_security.demo.model.Role;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Integer> {
-    Role getRoleById(int i);
+public interface RoleRepository extends JpaRepository<Role, Long> {
+    Role getRoleById(Long i);
 }
