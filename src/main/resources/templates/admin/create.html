@@ -8,8 +8,7 @@
 <body>
 
 
-<!--<form th:object="${user}" th:action="@{/save}" method="post">-->
-<form th:object="${user}" th:action="@{/admin/create/new}" method="post">
+<form th:object="${user}" th:action="@{/admin/create}" method="post">
     <label>Name: <input type="text" th:field="*{username}" /></label>
 
     <br/>

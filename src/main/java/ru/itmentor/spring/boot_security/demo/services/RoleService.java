@@ -8,6 +8,4 @@ import java.util.Set;
 public interface RoleService {
     List<Role> findAllRoles();
 
-    //Roman
-    Set<Role> getAllRoles();
 }

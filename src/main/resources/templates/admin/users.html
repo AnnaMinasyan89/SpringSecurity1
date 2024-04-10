@@ -56,19 +56,22 @@
 </table>
 
 <br>
-<button onclick="redirectToPageCreate()">Add User</button>
+<button onclick="redirectToPageCreate()">Create User</button>
 <button class="logout-button" onclick="logout()">Logout</button>
 
 
 
 <script>
 
-    function redirectToPageShow(userId) {
+   /* function redirectToPageShow(userId) {
         window.location.href = '/admin/' + userId;
-    }
+    }*/
+   function redirectToPageShow(userId) {
+       window.location.href = 'show/' + userId;
+   }
 
     function redirectToPageEdit(userId) {
-        window.location.href = 'editUser/' + userId;
+        window.location.href = 'edit/' + userId;
     }
 
     function redirectToPageDelete(userId) {
@@ -76,7 +79,7 @@
     }
 
     function redirectToPageCreate() {
-        window.location.href = '/admin/createUser';
+        window.location.href = '/admin/create';
     }
 
     function logout() {

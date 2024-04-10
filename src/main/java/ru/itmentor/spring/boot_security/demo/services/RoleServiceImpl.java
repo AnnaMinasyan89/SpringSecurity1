@@ -25,9 +25,4 @@ public class RoleServiceImpl implements RoleService{
     }
 
 
-//Roman
-    @Override
-    public Set<Role> getAllRoles() {
-        return  Set.copyOf(roleRepository.findAll()) ;
-    }
 }

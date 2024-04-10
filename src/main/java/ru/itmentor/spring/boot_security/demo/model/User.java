@@ -25,7 +25,7 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false, unique = true)
     private String password;
 
-    //  @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -120,21 +120,6 @@ public class User implements UserDetails {
     }
 
 
-    public void addRole(Role role) {
-        roles.add(role);
-    }     //?
-
-    /*public User getUser(){
-        return this;
-    }
-    public static UserDetails fromUser(User user) {
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),user.getPassword(),
-                user.isAccountNonExpired(), user.isCredentialsNonExpired(),
-                user.isEnabled(), user.isAccountNonLocked(),
-                user.getRoles()
-        );
-    }*/
 
 }
 
