@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>One user</title>
+</head>
+
+<body>
+
+<p th:text="${'name'+  ': ' +   user.getUsername() }">VALUE</p>
+
+<p th:text="${'id' + ': ' + user.getId()}">VALUE</p>
+
+<p th:text="${'role' + ': ' + user.getAuthorities()}"></p>
+
+<p th:text="${'passwrod' + ': ' + user.getPassword()}"></p>
+
+<br>
+
+</body>
+</html>
