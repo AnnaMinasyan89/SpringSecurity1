@@ -1,6 +1,7 @@
 package ru.itmentor.spring.boot_security.demo.services;
 
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.itmentor.spring.boot_security.demo.dto.UserAddDto;
 import ru.itmentor.spring.boot_security.demo.model.Role;
@@ -18,14 +19,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
-    // @Transactional(readOnly = true)
     @Override
     public User readUser(int id) {
         Optional<User> optionalUser = userRepository.findById(id);
@@ -52,15 +55,6 @@ public class UserServiceImpl implements UserService {
         return returnedUser.get();
     }
 
-    /*   @Override
-   @Transactional
-   public User addUser(UserAddDto userAddDto) {
-       List<Role> roles = roleRepository.findAllById(userAddDto.getRoles());
-       User user = new User(userAddDto.getUsername(), userAddDto.getPassword(), new HashSet<>());
-       user.getRoles().addAll(roles);
-       User savedUser = userRepository.save(user);
-       return savedUser;
-   }*/
 
      @Override
    @Transactional
@@ -70,7 +64,7 @@ public class UserServiceImpl implements UserService {
              throw new IllegalArgumentException("User with username " + userAddDto.getUsername() + " already exists");
          }
        List<Role> roles = roleRepository.findAllById(userAddDto.getRoles());
-       User user = new User(userAddDto.getUsername(), userAddDto.getPassword(), new HashSet<>());
+       User user = new User(userAddDto.getUsername(), passwordEncoder.encode(userAddDto.getPassword()), new HashSet<>());
        user.getRoles().addAll(roles);
        User savedUser = userRepository.save(user);
        return savedUser;
@@ -91,69 +85,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-  /*  @Override
-    @Transactional
-    public User addUser(UserAddDto userAddDto) {
-        // Проверяем, существует ли уже пользователь с таким именем
-        Optional<User> existingUser = userRepository.findByUsername(userAddDto.getUsername());
-        if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("User with username " + userAddDto.getUsername() + " already exists");
-        }
-
-        // Получаем все роли из репозитория
-        List<Role> allRoles = roleRepository.findAll();
-
-        // Создаем пустой набор для ролей пользователя
-        Set<Role> userRoles = new HashSet<>();
-
-        // Перебираем роли из DTO и добавляем их в набор
-        for (Long roleId : userAddDto.getRoles()) {
-            Role role = allRoles.stream()
-                    .filter(r -> r.getId().equals(roleId))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Role with id " + roleId + " not found"));
-            userRoles.add(role);
-        }
-
-        // Создаем пользователя с указанными ролями
-        User user = new User(userAddDto.getUsername(), userAddDto.getPassword(), userRoles);
-
-        // Сохраняем пользователя
-        return userRepository.save(user);
-    }
-*/
-
-/*    @Override
-    @Transactional
-    public User updateUser(int userId, UserAddDto userUpdateDto) {
-        // Получаем пользователя из базы данных
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + userId));
-
-        // Обновляем данные пользователя
-        user.setUsername(userUpdateDto.getUsername());
-      //  user.setPassword(userUpdateDto.getPassword());
-
-        // Получаем все роли из репозитория
-        List<Role> allRoles = roleRepository.findAll();
-
-        // Создаем пустой набор для ролей пользователя
-        Set<Role> userRoles = new HashSet<>();
-
-        // Перебираем роли из DTO и добавляем их в набор
-        for (Long roleId : userUpdateDto.getRoles()) {
-            Role role = allRoles.stream()
-                    .filter(r -> r.getId().equals(roleId))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Role with id " + roleId + " not found"));
-            userRoles.add(role);
-        }
-
-        // Обновляем роли пользователя
-        user.setRoles(userRoles);
-
-        // Сохраняем обновленного пользователя
-        return userRepository.save(user);
-    }*/
 
 }

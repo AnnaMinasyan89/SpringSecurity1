@@ -9,14 +9,14 @@ import ru.itmentor.spring.boot_security.demo.services.UserService;
 @SpringBootApplication
 public class SpringBootSecurityDemoApplication {
 
-	private final RoleService roleService;
+/*	private final RoleService roleService;
 	private final UserService userService;
 
 	@Autowired
 	public SpringBootSecurityDemoApplication(RoleService roleService, UserService userService) {
 		this.roleService = roleService;
 		this.userService = userService;
-	}
+	}*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootSecurityDemoApplication.class, args);
